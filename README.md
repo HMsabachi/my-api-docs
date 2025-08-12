@@ -1,5 +1,5 @@
 
-# 用户注册与登录 API 文档
+# 服务端 API 文档
 
 ## 1. 基本信息
 - **基础 URL**: `http://106.55.54.216:25000`
@@ -129,6 +129,184 @@ token=管理员密钥
   - 1000：获取成功
   - 1001：无效 token
 
+---
+### 创建游戏房间接口
+- **URL**: `/create_room`
+- **方法**: `POST`
+- **参数**: `Query`:
+```
+   token=用户临时密钥
+```
+- **请求参数**（JSON）:
+```json
+{
+    "playermax": 6,    // 房间最大人数
+}
+```
+- **返回示例**:
+```json
+{
+    "data": {       // 房间信息
+        "player_num": 0,   // 房间当前人数
+        "playermax": 6,    // 房间最大人数
+        "players": [],     // 房间当前玩家列表
+        "room_id": 1,      // 房间ID
+        "score_list": [],  // 房间得分列表
+        "start_time": 1755001878.168409,  // 房间开始时间
+        "status": "waiting"  // 房间状态  (waiting/playing/finished)
+    },
+    "message": "Create room successful! 创建房间成功",
+    "status": 1000
+}
+```
+- **状态码说明**:
+  - 1000：创建成功
+  - 1001：无效 token
+  - 1002：参数错误/房间已到达能创建的最大数
+---
+### 加入游戏房间接口
+- **URL**: `/join_room`   
+- **方法**: `POST`
+- **参数**: `Query`:
+```
+   token=用户临时密钥
+```
+- **请求参数**（JSON）:
+```json
+{
+    "room_id":1,  // 房间ID
+    "uid":1000003  // 用户ID
+}
+```
+- **返回示例**:
+```json
+{
+    "data": {
+        "player_num": 1,
+        "playermax": 6,
+        "players": [
+            {
+                "angle": 0,
+                "bullets": [],
+                "col1": ["","",""],
+                "col2": ["","",""],
+                "col3": ["","",""],
+                "hp": 100,
+                "id": 1,
+                "is_live": true,
+                "is_ready": false,
+                "is_winner": false,
+                "name": "lsdhuwda",
+                "pos": [0,0],
+                "uid": 1000003,
+                "weapons": []
+            }
+        ],
+        "room_id": 1,
+        "score_list": [],
+        "start_time": 1755001878.168409,
+        "status": "waiting"
+    },
+    "message": "Join room successful! 加入房间成功",
+    "status": 1000
+}
+```
+- **状态码说明**:
+  - 1000：加入成功成功
+  - 1001：无效 token
+  - 1002：参数错误/房间不存在/房间已满
+---
+### 获取单个房间信息接口
+- **URL**: `/get_room_info `   
+- **方法**: `GET`
+- **参数**: `Query`:
+```
+    token=用户临时密钥
+    room_id=房间ID
+```
+- **返回示例**:
+```json
+{
+    "data": {
+        "player_num": 1,
+        "playermax": 6,
+        "players": [
+            {
+                "angle": 0,
+                "bullets": [],
+                "col1": ["","",""],
+                "col2": ["","",""],
+                "col3": ["","",""],
+                "hp": 100,
+                "id": 1,
+                "is_live": true,
+                "is_ready": false,
+                "is_winner": false,
+                "name": "lsdhuwda",
+                "pos": [0,0],
+                "uid": 1000003,
+                "weapons": []
+            }
+        ],
+        "room_id": 1,
+        "score_list": [],
+        "start_time": 1755001878.168409,
+        "status": "waiting"
+    },
+    "message": "Get room info successful! 获取房间信息成功",
+    "status": 1000
+}
+```
+- **状态码说明**:
+  - 1000：获取成功
+  - 1001：无效 token
+  - 1002：参数错误/房间不存在
+---
+### 获取所有房间信息接口
+- **URL**: `/get_all_room_info `   
+- **方法**: `GET`
+- **参数**: `Query`:
+```
+    token=用户临时密钥
+```
+- **返回示例**:
+```json
+{
+    "data": [
+        {
+            "player_num": 1,
+            "playermax": 6,
+            "players": 
+            [{
+                "angle": 0,
+                "bullets": [],
+                "col1": ["","",""],
+                "col2": ["","",""],
+                "col3": ["","",""],
+                "hp": 100,
+                "id": 1,
+                "is_live": true,
+                "is_ready": false,
+                "is_winner": false,
+                "name": "lsdhuwda",
+                "pos": [0,0],
+                "uid": 1000003,
+                "weapons": []
+            }],
+            "room_id": 1,
+            "score_list": [],
+            "start_time": 1755001878.168409,
+            "status": "waiting"
+        }
+    ],
+    "message": "Get all room info successful! 获取全部房间信息成功",
+    "status": 1000
+}
+```
+- **状态码说明**:
+  - 1000：获取成功
+  - 1001：无效 token
+  - 1002：参数错误/房间不存在
 ---
 ## 3.状态码说明
   - 100 登陆时缺少必要参数
